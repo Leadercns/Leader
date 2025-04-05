@@ -4,159 +4,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Leader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #6CBEEC;
+            --accent: #38EF7D;
+            --bg: #f0f8ff;
+            --text: #2c3e50;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'HarmonyOS Sans', 'Segoe UI', system-ui, sans-serif;
             -webkit-user-select: none;
             -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
         }
 
         body {
-            background: #f0f4f8;
-            color: #2d3748;
-            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 动态云层背景 */
+        .cloud-bg {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(160deg, #e3f2fd 0%, #f0f8ff 100%);
+            z-index: -1;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
         }
 
-        .profile {
+        /* 头部区域 */
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin: 5rem 0 3rem;
+            position: relative;
+            animation: fadeIn 1s ease;
         }
 
         .avatar {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            border: 4px solid rgba(255,255,255,0.9);
+            padding: 5px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            box-shadow: 0 10px 30px rgba(74,144,226,0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .avatar:hover {
-            transform: rotate(5deg);
+            transform: rotate(8deg) scale(1.05);
+            box-shadow: 0 15px 40px rgba(74,144,226,0.3);
         }
 
-        h1 {
-            font-size: 2.5rem;
-            color: #2b6cb0;
-            margin: 1rem 0;
+        /* 信息卡片 */
+        .card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(108,190,236,0.1);
+            border: 1px solid rgba(108,190,236,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .section {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(108,190,236,0.2);
         }
 
-        h2 {
-            color: #2b6cb0;
-            border-bottom: 2px solid #bee3f8;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
+        /* 项目列表 */
         .project-list {
             list-style: none;
+            margin-top: 1.5rem;
         }
 
         .project-item {
-            padding: 1rem;
-            background: #f7fafc;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            transition: transform 0.2s ease;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            background: linear-gradient(90deg, rgba(108,190,236,0.05) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(108,190,236,0.1);
         }
 
         .project-item:hover {
+            background: linear-gradient(90deg, rgba(108,190,236,0.1) 0%, rgba(255,255,255,0) 100%);
             transform: translateX(10px);
         }
 
-        .thanks {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            background: #2b6cb0;
+        .project-item i {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
         }
 
+        /* 访客信息面板 */
+        .visitor-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 1.2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 5px 20px rgba(108,190,236,0.1);
+            border: 1px solid rgba(108,190,236,0.1);
+        }
+
+        /* 渐变文字 */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        /* 链接样式 */
+        a {
+            color: var(--primary);
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--secondary);
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
+                padding: 1.5rem;
+            }
+            .visitor-info {
+                position: static;
+                margin: 1rem 0;
+                text-align: center;
+            }
+            .avatar {
+                width: 150px;
+                height: 150px;
+            }
+            .card {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="cloud-bg"></div>
+
+    <div class="visitor-info">
+        <div>地区 <span id="country">正在获取...</span></div>
+        <div>时间 <span id="time"></span></div>
+        <div>ip address <span id="ip">正在获取...</span></div>
+    </div>
+
     <div class="container">
-        <div class="profile">
-            <img src="http://q.qlogo.cn/headimg_dl?dst_uin=3753937699&spec=640&img_type=jpg" alt="头像" class="avatar">
-            <h1>Leader</h1>
+        <div class="header">
+            <img src="http://q.qlogo.cn/headimg_dl?dst_uin=3753937699&spec=640&img_type=jpg" 
+                 alt="头像" 
+                 class="avatar">
+            <h1 class="gradient-text" style="margin: 2rem 0; font-size: 3rem; letter-spacing: 2px;">Leader</h1>
+            <p style="color: var(--secondary); font-weight: 500;">尽吾志也而不能至者，可以无悔矣，其孰能讥之乎？</p>
         </div>
 
-        <div class="section">
-            <h2>个人简介</h2>
-            <p>大专生一枚，热爱计算机，会点C语言和安卓开发，会一点防御算法</p>
+        <div class="card">
+            <h2 class="gradient-text" style="font-size: 1.8rem;">🎓 关于我</h2>
+            <p style="margin: 1.5rem 0; line-height: 1.8; color: #4a5568;">
+                大专生一枚，爱好计算机，会点C语言和安卓开发。
+            </p>
         </div>
 
-        <div class="section">
-            <h2>项目经历</h2>
+        <div class="card">
+            <h2 class="gradient-text" style="font-size: 1.8rem;">🚀 开源项目</h2>
             <ul class="project-list">
                 <li class="project-item">
-                    <strong>高考倒计时</strong> - 安卓软件已开源
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <h3>高考倒计时</h3>
+                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
+                    </div>
                 </li>
                 <li class="project-item">
-                    <strong>Mymemo</strong> - 安卓软件已开源
+                    <i class="fas fa-clipboard-list"></i>
+                    <div>
+                        <h3>Mymemo</h3>
+                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
+                    </div>
                 </li>
                 <li class="project-item">
-                    <strong>快报</strong> - 安卓软件已开源
+                    <i class="fas fa-bolt"></i>
+                    <div>
+                        <h3>快报</h3>
+                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
+                    </div>
                 </li>
             </ul>
         </div>
 
-        <div class="section">
-            <h2>特别感谢</h2>
-            <div class="thanks">
-                <span class="badge">Tiecode</span>
-                <span class="badge">挽悦云X</span>
+        <div class="card">
+            <h2 class="gradient-text" style="font-size: 1.8rem;">🌟 特别致谢</h2>
+            <div style="margin: 1.5rem 0;">
+                <div style="padding: 1rem 0;">
+                    <a href="http://tiecode.qiplat.com/" target="_blank">
+                    <h3>Tiecode</h3>
+                    <p style="color: var(--secondary);">安卓开发工具</p>
+                </div>
+                <div style="padding: 1rem 0;">
+                    <a href="https://wanyueyun-x.xbjstd.cn:5496" target="_blank">
+                        挽悦云X <i class="fas fa-external-link-alt" style="margin-left: 0.5rem;"></i>
+                    </a>
+                    <p style="color: var(--secondary); margin-top: 0.5rem;">优质云服务平台</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // 禁止右键菜单
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
+        // 安全设置
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault() }, { passive: false });
 
-        // 禁止文字选择
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-        });
+        // 获取访问者信息
+        fetch('https://ipapi.co/json/')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('ip').textContent = data.ip;
+                document.getElementById('country').textContent = `${data.country_name} ${data.region_code}`;
+            });
 
-        // 禁止键盘操作
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey || e.metaKey) {
-                e.preventDefault();
-            }
+        // 动态时间显示
+        function updateTime() {
+            const options = {
+                timeZone: 'Asia/Shanghai',
+                hour12: false,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const timeString = new Date().toLocaleString('zh-CN', options)
+                .replace(/\//g, '-')
+                .replace(',', '');
+            document.getElementById('time').textContent = timeString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 背景动态效果
+        document.addEventListener('mousemove', e => {
+            const cloud = document.querySelector('.cloud-bg');
+            const x = e.clientX / window.innerWidth * 20;
+            const y = e.clientY / window.innerHeight * 20;
+            cloud.style.backgroundPosition = `${x}% ${y}%`;
         });
     </script>
 </body>
