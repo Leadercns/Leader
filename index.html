@@ -3,344 +3,1036 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Leader</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Leader web</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #4A90E2;
-            --secondary: #6CBEEC;
-            --accent: #38EF7D;
-            --bg: #f0f8ff;
-            --text: #2c3e50;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'HarmonyOS Sans', 'Segoe UI', system-ui, sans-serif;
             -webkit-user-select: none;
             -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
         }
-
+        
+        :root {
+            --primary: #1a75bc;
+            --primary-light: #4da8da;
+            --dark: #0d1b2a;
+            --dark-light: #1b263b;
+            --light: #e0e1dd;
+            --accent: #00b4d8;
+            --progress: linear-gradient(90deg, #00b0ff, #00e5ff);
+        }
+        
         body {
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
             overflow-x: hidden;
-            position: relative;
+            line-height: 1.6;
         }
-
-        /* 动态云层背景 */
-        .cloud-bg {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(160deg, #e3f2fd 0%, #f0f8ff 100%);
-            z-index: -1;
-        }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            width: 100%;
             position: relative;
+            z-index: 2;
         }
-
-        /* 头部区域 */
-        .header {
+        
+        /* 头部样式 */
+        header {
             text-align: center;
-            margin: 5rem 0 3rem;
+            padding: 60px 0 40px;
             position: relative;
-            animation: fadeIn 1s ease;
+            animation: fadeIn 1s ease-out;
         }
-
-        .avatar {
+        
+        .avatar-container {
             width: 200px;
             height: 200px;
+            margin: 0 auto 30px;
             border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.9);
-            padding: 5px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            box-shadow: 0 10px 30px rgba(74,144,226,0.2);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+            border: 5px solid rgba(173, 216, 230, 0.7);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 2;
         }
-
-        .avatar:hover {
-            transform: rotate(8deg) scale(1.05);
-            box-shadow: 0 15px 40px rgba(74,144,226,0.3);
+        
+        .avatar-container:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 50px rgba(0, 180, 216, 0.4);
         }
-
-        /* 信息卡片 */
-        .card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(12px);
+        
+        .avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+            color: #e0f7fa;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .subtitle {
+            font-size: 1.6rem;
+            color: #bbdefb;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+            font-weight: 300;
+            padding: 0 20px;
+        }
+        
+        /* 签名样式 */
+        .signature {
+            max-width: 800px;
+            margin: 40px auto 30px;
+            text-align: center;
+            padding: 25px 40px;
+            background: rgba(25, 39, 52, 0.5);
+            border-radius: 15px;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .signature::before {
+            content: """;
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            font-size: 8rem;
+            color: rgba(0, 180, 216, 0.15);
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .signature-text {
+            font-size: 1.8rem;
+            font-style: italic;
+            color: #a7e9ff;
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .signature-author {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #80deea;
+            text-align: right;
+            font-style: normal;
+        }
+        
+        /* 技能部分样式 */
+        .skills-section {
+            background: rgba(25, 39, 52, 0.7);
             border-radius: 20px;
-            padding: 2.5rem;
-            margin: 2rem 0;
-            box-shadow: 0 8px 32px rgba(108,190,236,0.1);
-            border: 1px solid rgba(108,190,236,0.15);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 50px;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 2;
         }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(108,190,236,0.2);
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #4fc3f7;
+            position: relative;
+            font-weight: 600;
         }
-
-        /* 项目列表 */
-        .project-list {
-            list-style: none;
-            margin-top: 1.5rem;
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: var(--progress);
+            border-radius: 3px;
         }
-
-        .project-item {
-            padding: 1.2rem;
-            margin: 1rem 0;
-            background: linear-gradient(90deg, rgba(108,190,236,0.05) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 12px;
+        
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 20px;
+        }
+        
+        .skill-item {
+            background: rgba(30, 45, 60, 0.8);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(64, 196, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--progress);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 150, 255, 0.4);
+            background: rgba(35, 50, 70, 0.9);
+        }
+        
+        .skill-item:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .skill-header {
             display: flex;
             align-items: center;
-            transition: all 0.3s;
-            border: 1px solid rgba(108,190,236,0.1);
+            margin-bottom: 25px;
         }
-
-        .project-item:hover {
-            background: linear-gradient(90deg, rgba(108,190,236,0.1) 0%, rgba(255,255,255,0) 100%);
-            transform: translateX(10px);
-        }
-
-        .project-item i {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white;
+        
+        .skill-icon {
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        /* 访客信息面板 */
-        .visitor-info {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.9);
-            padding: 1.2rem;
+            background: rgba(0, 176, 255, 0.15);
             border-radius: 15px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 5px 20px rgba(108,190,236,0.1);
-            border: 1px solid rgba(108,190,236,0.1);
+            margin-right: 20px;
+            font-size: 28px;
+            color: #00b0ff;
+            transition: transform 0.3s ease;
         }
-
-        /* 渐变文字 */
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        
+        .skill-item:hover .skill-icon {
+            transform: rotate(15deg);
+        }
+        
+        .skill-name {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #e1f5fe;
+        }
+        
+        .skill-percent {
+            margin-left: auto;
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #00e5ff;
+        }
+        
+        .progress-container {
+            height: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            background: var(--progress);
+            position: relative;
+            transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        /* 项目展示部分 */
+        .projects-section {
+            background: rgba(25, 39, 52, 0.7);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-top: 30px;
+        }
+        
+        .project-card {
+            background: rgba(30, 45, 60, 0.8);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(64, 196, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--progress);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 150, 255, 0.4);
+            background: rgba(35, 50, 70, 0.9);
+        }
+        
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 176, 255, 0.15);
+            border-radius: 15px;
+            margin-right: 20px;
+            font-size: 28px;
+            color: #00b0ff;
+        }
+        
+        .project-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #e1f5fe;
+        }
+        
+        .project-type {
+            margin-left: 15px;
+            font-size: 0.9rem;
+            background: rgba(0, 180, 216, 0.3);
+            color: #80deea;
+            padding: 3px 10px;
+            border-radius: 15px;
+        }
+        
+        .project-description {
+            flex: 1;
+            font-size: 1.1rem;
+            color: #bbdefb;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .project-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .status-active {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .status-upcoming {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            color: #00b0ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 8px;
+            background: rgba(0, 176, 255, 0.1);
+        }
+        
+        .project-link:hover {
+            background: rgba(0, 176, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .project-link i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* 特别感谢部分 */
+        .thanks-section {
+            background: rgba(25, 39, 52, 0.7);
+            border-radius: 20px;
+            padding: 40px 50px;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .thanks-title {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            color: #4fc3f7;
+            position: relative;
             font-weight: 600;
         }
-
-        /* 链接样式 */
-        a {
-            color: var(--primary);
-            position: relative;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        a:hover {
-            color: var(--secondary);
-        }
-
-        a::after {
-            content: '';
+        
+        .thanks-title::after {
+            content: "";
             position: absolute;
-            bottom: -2px;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--progress);
+            border-radius: 2px;
+        }
+        
+        .thanks-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .thank-item {
+            background: rgba(30, 45, 60, 0.8);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(64, 196, 255, 0.2);
+            width: 280px;
+            text-align: center;
+        }
+        
+        .thank-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 150, 255, 0.3);
+            background: rgba(35, 50, 70, 0.9);
+        }
+        
+        .thank-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 176, 255, 0.15);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: #00b0ff;
+        }
+        
+        .thank-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #e1f5fe;
+            margin-bottom: 15px;
+        }
+        
+        .thank-link {
+            display: inline-flex;
+            align-items: center;
+            color: #80deea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .thank-link:hover {
+            color: #00e5ff;
+            transform: translateX(5px);
+        }
+        
+        .thank-link i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .thank-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: auto;
+            color: #90a4ae;
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(100, 181, 246, 0.2);
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .copyright {
+            margin: 15px 0;
+            font-size: 1.3rem;
+            color: #bbdefb;
+            font-weight: 500;
+        }
+        
+        .ip-info {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #80deea;
+            font-family: monospace;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            overflow: hidden;
+        }
+        
+        .ip-info i {
+            margin-right: 12px;
+            color: #4fc3f7;
+        }
+        
+        .ip-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        
+        .ip-detail {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #a7e9ff;
+        }
+        
+        /* 背景装饰 */
+        .background-elements {
+            position: fixed;
+            top: 0;
             left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
-        a:hover::after {
             width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
         }
-
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+        
+        .circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            top: 40%;
+            right: 20%;
+            animation-delay: 4s;
+        }
+        
+        .circle:nth-child(4) {
+            width: 350px;
+            height: 350px;
+            bottom: 25%;
+            left: 15%;
+            animation-delay: 6s;
+        }
+        
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        /* 响应式设计 */
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(80px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            33% { 
+                transform: translateY(-30px) translateX(20px) rotate(5deg);
+            }
+            66% { 
+                transform: translateY(20px) translateX(-30px) rotate(-5deg);
+            }
+            100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+        }
+        
+        @keyframes shine {
+            0% { background-position: -200px; }
+            100% { background-position: calc(200px + 100%); }
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 992px) {
+            .skills-container, .projects-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+            
+            .signature-text {
+                font-size: 1.6rem;
+            }
+            
+            .thanks-items {
+                gap: 25px;
+            }
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
+            .skills-container, .projects-container {
+                grid-template-columns: 1fr;
             }
-            .visitor-info {
-                position: static;
-                margin: 1rem 0;
-                text-align: center;
+            
+            h1 {
+                font-size: 2.5rem;
             }
-            .avatar {
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .skills-section, .projects-section, .thanks-section {
+                padding: 35px 25px;
+            }
+            
+            .avatar-container {
+                width: 170px;
+                height: 170px;
+            }
+            
+            .signature {
+                padding: 20px;
+                margin: 30px auto;
+            }
+            
+            .signature-text {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 40px 0 30px;
+            }
+            
+            .avatar-container {
                 width: 150px;
                 height: 150px;
             }
-            .card {
-                padding: 1.5rem;
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+            }
+            
+            .skill-name, .project-name {
+                font-size: 1.4rem;
+            }
+            
+            .skill-percent {
+                font-size: 1.4rem;
+            }
+            
+            .ip-info {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            
+            .signature-text {
+                font-size: 1.2rem;
+            }
+            
+            .thank-item {
+                width: 100%;
+                max-width: 280px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="cloud-bg"></div>
-
-    <div class="visitor-info">
-        <div>地区 <span id="country">正在获取...</span></div>
-        <div>时间 <span id="time"></span></div>
-        <div>ip address <span id="ip">正在获取...</span></div>
+    <!-- 背景装饰元素 -->
+    <div class="background-elements">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
     </div>
-
+    
     <div class="container">
-        <div class="header">
-            <img src="https://wanyueyun-x.xbjstd.cn:5496/api/getFile/如雨/Image_1747281568440.jpg" 
-                 alt="头像" 
-                 class="avatar">
-            <h1 class="gradient-text" style="margin: 2rem 0; font-size: 3rem; letter-spacing: 2px;">Leader</h1>
-            <p style="color: var(--secondary); font-weight: 500;">尽吾志也而不能至者，可以无悔矣，其孰能讥之乎？</p>
-        </div>
-
-        <div class="card">
-            <h2 class="gradient-text" style="font-size: 1.8rem;">🎓 关于我</h2>
-            <p style="margin: 1.5rem 0; line-height: 1.8; color: #4a5568;">
-                大专生一枚，爱好计算机，会点C语言和安卓开发。
-            </p>
-        </div>
-
-
-
-        <div class="card">
-            <h2 class="gradient-text" style="font-size: 1.8rem;">🚀 开源项目</h2>
-            <ul class="project-list">
-                <li class="project-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <div>
-                        <h3>高考倒计时</h3>
-                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
+        <header>
+            <div class="avatar-container">
+                <img src="https://wanyueyun-x.xbjstd.cn:5496/api/getFile/如雨/Image_1747281568440.jpg" alt="Leader的个人头像" class="avatar">
+            </div>
+            <h1>Leader</h1>
+            <p class="subtitle">计算机爱好者 | 公办大专生一枚</p>
+            
+            <div class="signature">
+                <p class="signature-text">尽吾志也而不能至者，可以无悔矣，其孰能讥之乎？</p>
+                <p class="signature-author">—— 王安石《游褒禅山记》</p>
+            </div>
+        </header>
+        
+        <section class="skills-section">
+            <h2 class="section-title">技术栈熟练度</h2>
+            <div class="skills-container">
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="skill-name">结绳</div>
+                        <div class="skill-percent">80%</div>
                     </div>
-                </li>
-                <li class="project-item">
-                    <i class="fas fa-clipboard-list"></i>
-                    <div>
-                        <h3>Mymemo</h3>
-                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 80%;"></div>
                     </div>
-                </li>
-                <li class="project-item">
-                    <i class="fas fa-bolt"></i>
-                    <div>
-                        <h3>快报</h3>
-                        <p style="color: var(--secondary); margin-top: 0.5rem;">已开源安卓应用</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-
-        <div class="card">
-            <h2 class="gradient-text" style="font-size: 1.8rem;">🛸 预热项目</h2>
-            <ul class="project-list">
-                <li class="project-item">
-                    <div>
-                        <h3>Leader Cloud</h3>
-                        <p style="color: var(--secondary); margin-top: 0.5rem;">全新的云后台App</p>
-          <p style="color: var(--secondary); margin-top: 0.1rem;">目前正在筹备当中，预计2025年10月进行a测，敬请期待。
-</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-
-
-
-
-
-        <div class="card">
-            <h2 class="gradient-text" style="font-size: 1.8rem;">🌟 特别致谢</h2>
-            <div style="margin: 1.5rem 0;">
-                <div style="padding: 1rem 0;">
-                    <a href="http://tiecode.qiplat.com/" target="_blank">
-                    <h3>Tiecode</h3>
-                    <p style="color: var(--secondary);">安卓开发工具</p>
                 </div>
-                <div style="padding: 1rem 0;">
-                    <a href="https://wanyueyun-x.xbjstd.cn:5496" target="_blank">
-                        挽悦云X <i class="fas fa-external-link-alt" style="margin-left: 0.5rem;"></i>
-                    </a>
-                    <p style="color: var(--secondary); margin-top: 0.5rem;">优质云服务平台</p>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="fab fa-cuttlefish"></i>
+                        </div>
+                        <div class="skill-name">C语言</div>
+                        <div class="skill-percent">60%</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="fab fa-java"></i>
+                        </div>
+                        <div class="skill-name">Java</div>
+                        <div class="skill-percent">20%</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 20%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="skill-name">Python</div>
+                        <div class="skill-percent">20%</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 20%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-item">
+                    <div class="skill-header">
+                        <div class="skill-icon">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <div class="skill-name">HTML</div>
+                        <div class="skill-percent">10%</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 10%;"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-        <div style="text-align: center; padding: 20px;">
-            copyright &copy; Leader 2025
-        </div>
-
-
-        <div style="text-align: center; padding: 20px;">
-            基于Github的网页
-        </div>
-
+        </section>
+        
+        <!-- 开源项目部分 -->
+        <section class="projects-section">
+            <h2 class="section-title">开源项目</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="project-name">Mymemo</div>
+                        <div class="project-type">笔记应用</div>
+                    </div>
+                    <div class="project-description">
+                        一款简洁高效的跨平台笔记应用，支持Markdown语法、标签分类、云同步等功能，帮助用户随时随地记录灵感。
+                    </div>
+                    <div class="project-status status-active">已开源且停止维护</div>
+                    <a href="#" class="project-link">查看项目 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="project-name">高考倒计时</div>
+                        <div class="project-type">倒计时应用</div>
+                    </div>
+                    <div class="project-description">
+                        为高考学子设计的倒计时应用，提供每日励志语录功能，助力学生高效备考。
+                    </div>
+                    <div class="project-status status-active">已开源且停止维护</div>
+                    <a href="#" class="project-link">查看项目 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="project-name">快报</div>
+                        <div class="project-type">作业收取</div>
+                    </div>
+                    <div class="project-description">
+                        这是一款能够收取班主任或课代表布置的作业app
+                    </div>
+                    <div class="project-status status-active">已开源且停止维护</div>
+                    <a href="#" class="project-link">查看项目 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 预开发项目部分 -->
+        <section class="projects-section">
+            <h2 class="section-title">预开发项目</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="project-name">Aris Pro</div>
+                        <div class="project-type">查询软件</div>
+                    </div>
+                    <div class="project-description">
+                    是一款查询软件，查询什么东西由你来定。
+                    </div>
+                    <div class="project-status status-upcoming">即将启动</div>
+                    <a href="#" class="project-link">了解更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="project-name">Leader Cloud</div>
+                        <div class="project-type">云服务</div>
+                    </div>
+                    <div class="project-description">
+                    这是一款能让开发者们快速对接，无任何后端技术即可使用的云后台，支持登录，云文档，云储存，云托管的app
+                    </div>
+                    <div class="project-status status-upcoming">即将启动</div>
+                    <a href="#" class="project-link">了解更多 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                
+                
+            </div>
+        </section>
+        
+        <!-- 特别感谢部分 -->
+        <section class="thanks-section">
+            <h2 class="thanks-title">特别感谢</h2>
+            <div class="thanks-items">
+                <div class="thank-item">
+                    <div class="thank-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="thank-name">结绳</div>
+                    <a href="http://tiecode.qiplat.com/" class="thank-link" target="_blank">
+                        访问网站 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                
+                <div class="thank-item">
+                    <div class="thank-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="thank-name">挽悦云X</div>
+                    <a href="https://wanyueyun-x.xbjstd.cn:5496/" class="thank-link" target="_blank">
+                        访问平台 <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="copyright">copyright © Leader2025</div>
+            <p>基于github托管的静态网站</p>
+            <div class="ip-info">
+                <i class="fas fa-network-wired"></i>
+                <span id="ip-address">正在获取您的IP信息...</span>
+                <div class="ip-details">
+                    <span id="ip-location">位置: 获取中...</span>
+                    <span id="ip-isp">运营商: 获取中...</span>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
-        // 安全设置
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('wheel', e => { if(e.ctrlKey) e.preventDefault() }, { passive: false });
-
-        // 获取访问者信息
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('ip').textContent = data.ip;
-                document.getElementById('country').textContent = `${data.country_name} ${data.region_code}`;
-            });
-
-        // 动态时间显示
-        function updateTime() {
-            const options = {
-                timeZone: 'Asia/Shanghai',
-                hour12: false,
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            const timeString = new Date().toLocaleString('zh-CN', options)
-                .replace(/\//g, '-')
-                .replace(',', '');
-            document.getElementById('time').textContent = timeString;
+        // 禁止复制
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            alert('内容受保护，禁止复制');
+        });
+        
+        // 获取IP地址和详细信息
+        async function fetchIP() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                // 更新IP信息
+                document.getElementById('ip-address').textContent = `访问者IP: ${data.ip}`;
+                document.getElementById('ip-location').textContent = `位置: ${data.city}, ${data.region}, ${data.country_name}`;
+                document.getElementById('ip-isp').textContent = `运营商: ${data.org || '未知'}`;
+            } catch (error) {
+                document.getElementById('ip-address').textContent = '无法获取IP信息';
+                document.getElementById('ip-location').textContent = '位置: 获取失败';
+                document.getElementById('ip-isp').textContent = '运营商: 获取失败';
+            }
         }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        // 背景动态效果
-        document.addEventListener('mousemove', e => {
-            const cloud = document.querySelector('.cloud-bg');
-            const x = e.clientX / window.innerWidth * 20;
-            const y = e.clientY / window.innerHeight * 20;
-            cloud.style.backgroundPosition = `${x}% ${y}%`;
+        
+        // 页面加载完成后执行
+        window.addEventListener('DOMContentLoaded', () => {
+            // 获取IP
+            fetchIP();
+            
+            // 添加进度条动画
+            setTimeout(() => {
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars.forEach(bar => {
+                    const width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                });
+            }, 500);
         });
     </script>
 </body>
